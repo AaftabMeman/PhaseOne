@@ -1,0 +1,52 @@
+header{
+    background-color: #b2b2b2;
+    background-color: rgba(0, 0, 0, .3);
+    
+}
+
+.arizona{
+text-align: center;
+margin-top: auto;
+border: 10px solid black;
+font: icon 70px;
+}
+
+
+ul{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    border: 2px solid grey;
+    background-color: rgba(219, 118, 23, 0.438);
+  }
+  li{
+     display: inline;
+   
+  }
+  li a {
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;  
+  }
+  main article img{
+      height: auto;
+      width: 100%;
+      height: 30%;
+      border:7px solid lightblue;
+      
+  }
+  .rrr{
+      font-size: 35px;
+      font-family: sans-serif;
+      color: teal;
+      text-align: center;
+      padding-top: 1%;
+      padding-bottom: 1%;
+      border:double 8px rgba(219, 118, 23, 0.438);
+  }
+  #lname{
+      float: right;
+  }
+footer{
+    text-align: center;
+    font-size: 30px;
+    color:seagreen;
+    border:5px solid saddlebrown;
+}
