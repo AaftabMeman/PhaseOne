@@ -37,6 +37,45 @@
              <h2>Please Provide Your Information to book your Stay!!..</h2>
              
 </div>
+<?php 
+
+$id = null; 
+$firstname = null;
+$lastname = null; 
+$phone = null;
+$email = null;
+$chinout = null;
+$choutdate= null;
+
+//check if user is editing 
+
+if(!empty($_GET['id']) && (is_numeric($_GET['id']))) {
+    //grab id and store in a variable 
+    $id = filter_input(INPUT_GET, 'id');
+    //connect to db 
+    require('connect.php'); 
+    //set up query 
+    $sql = "SELECT * FROM RoomBooking WHERE user_id = :user_id;"; 
+    //prepare 
+    $statement = $db->prepare($sql); 
+    //bind 
+    $statement->bindParam(':user_id', $id); 
+    //execute 
+    $statement->execute(); 
+    //use fetchAll method to store 
+    $records = $statement->fetchAll(); 
+    foreach($records as $record) :
+        $firstname = $record['first_name']; 
+        $lastname = $record['last_name']; 
+        $phone = $record['phone']; 
+        $email = $record['email']; 
+        $chindate = $record['chin_date']; 
+        $choutdate= $record['ch_outdate']; 
+       
+     endforeach; 
+     $statement->closeCursor(); 
+    }
+?>
     <form action="process.php" method="post">
     <label for="fname">First name:</label>
    <input type="text"  name="fname"  placeholder= "First Name">

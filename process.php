@@ -25,6 +25,7 @@
 </body>
 </html>
 <?php
+ob_start();
 
 $first_name = filter_input(INPUT_POST, 'fname');
 $last_name = filter_input(INPUT_POST, 'lname');
@@ -32,38 +33,51 @@ $phone = filter_input(INPUT_POST, 'phonenum',FILTER_VALIDATE_INT);
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 $chindate= filter_input(INPUT_POST,'chindate');
 $choutdate= filter_input(INPUT_POST,'choutdate');
+$id = null; 
+$id = filter_input(INPUT_POST, 'user_id');
 
 //set up a flag variable for debugging 
 $ok = true; 
+
+if($ok === true){
+
 try{
 
     require('connect.php');
+    if(!empty($id)){
+        $sql = "UPDATE RoomBooking SET first_name = :firstname, last_name = :lastname, phone = :phone, email = :email,chin_date= :chin_date, chout_date = :chout_date WHERE user_id = :user_id;";
+    }
+    else{
 
-    $sql = "INSERT into RoomBooking (first_name, last_name, phone, email, chin_date, chout_date) VALUES (:fname, :lname, :phonenum, :email, :chindate, :choutdate);";
+    $sql = "INSERT INTO RoomBooking (first_name, last_name, phone, email, chin_date, chout_date) VALUES (:first_name, :last_name, :phone, :email, :chin_date, :chout_date);";
     
     $statement = $db->prepare($sql);
 
                 //bind parameters using the bindParam method of the PDO Statement Object 
                 $statement->bindParam(':first_name', $first_name);
                 $statement->bindParam(':last_name', $last_name);
-                $statement->bindParam(':phonenum', $phone);
+                $statement->bindParam(':phone', $phone);
                 $statement->bindParam(':email', $email);
                 $statement->bindParam(':chin_date', $chindate);
                 $statement->bindParam(':chout_date', $choutdate);
+                if(!empty($id)) {
+                    $statement->bindParam(':user_id', $id ); 
+                }
 
                 $statement->execute(); 
 
-                //echo '<p> Success, your tune has been added!</p> ';
-                //close DB connection 
-                $statement->closeCursor(); 
-                
-
+                $statement->closeCursor();
+                    
             
             }
+        }
+
             catch(PDOException $e) {
                 echo "<p>Something went wrong! </p>";
-
-
-}
+                $error_message = $e->getMessage(); 
+                echo $error_message;
+                }
+            }
+            ob_flush();
 ?>
 
