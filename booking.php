@@ -33,17 +33,25 @@
      There is comfort. There is reassurance.<br>
          ~Diane von Furstenberg
         </div>
-        <div class="fr">
-             <h2>Please Login/Sign up to book..!!</h2>
-             
-</div>
 
-    <a class="btn" href="register.php">Register</a>
-        <a class="btn" href="login.php">Login</a>
-</main>
-<footer>
-            Created By Aaftab Meman 
-</footer>
+        <form action="view.php" method="post">
+    <label for="fname">First name:</label>
+   <input type="text"  name="fname"  placeholder= "First Name">
+   <label for="lname">Last name:</label>
+   <input type="text"  name="lname" placeholder="Last Name"><br>
+   <label for="Phone">Phone Number:</label>
+   <input type="tel" name="phonenum" placeholder="Phone Number">
+   <label for="email">E-mail</label>
+   <input type="email" name="email" placeholder="Email"><br>
+   <label for="email">Location</label>
+   <input type="location" name="location" placeholder="Location"><br>
+   <label for="checkindate"> Check in Date: </label>
+   <input type="date" name="chindate" placeholder="Check in Date">
+   <label for="checkoutdate"> Check out Date: </label>
+   <input type="date" name="choutdate" placeholder="Check out Date"><br>
+   <input type="submit"  name="submit" value="Submit">
 
-</body>
-</html>
+   </main>
+  </html>
+
+   

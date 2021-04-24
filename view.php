@@ -25,51 +25,54 @@
 </body>
 </html>
 <?php
-// ob_start();
 
 $first_name = filter_input(INPUT_POST, 'fname');
 $last_name = filter_input(INPUT_POST, 'lname');
 $phone = filter_input(INPUT_POST, 'phonenum',FILTER_VALIDATE_INT);
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+$location = filter_input(INPUT_POST, 'location');
 $chindate= filter_input(INPUT_POST,'chindate');
 $choutdate= filter_input(INPUT_POST,'choutdate');
-$id = null; 
-$id = filter_input(INPUT_POST, 'user_id');
-
 
 
 //set up a flag variable for debugging 
 $ok = true; 
+try{
 
-//if($ok === true){
+    require('connect.php');
 
-    if($ok === true) {
-        try {
-            //connect to the database
-            require('connect.php');
-            //set up our SQL query 
-            $sql = "INSERT INTO RoomBooking (first_name, last_name, phone, email, chin_date,chout_date) VALUES (:firstname, :lastname, :phone, :email, :chindate, :choutdate);"; 
-            //call the prepare method of the PDO object 
-            $statement = $db->prepare($sql);
-            //bind parameters 
-            $statement->bindParam(':firstname', $first_name);
-            $statement->bindParam(':lastname', $last_name); 
-            $statement->bindParam(':phone', $phone);
-            $statement->bindParam(':email', $email); 
-            $statement->bindParam(':chindate', $chindate); 
-            $statement->bindParam(':choutdate', $choutdate); 
-            //execute the query 
-            $statement->execute();
-            //close the db connection 
-            $statement->closeCursor(); 
-        }
+    $sql = "INSERT into RoomBooking (first_name, last_name, phone, email, location,chin_date, chout_date) 
+    VALUES (:fname, :lname, :phonenum, :email, :location, :chindate, :choutdate)";
+    
+    $statement = $db->prepare($sql);
 
+                //bind parameters using the bindParam method of the PDO Statement Object 
+                $statement->bindParam(':fname', $first_name);
+                $statement->bindParam(':lname', $last_name);
+                $statement->bindParam(':phonenum', $phone);
+                $statement->bindParam(':email', $email);
+                $statement->bindParam(':location', $location);
+                $statement->bindParam(':chindate', $chindate);
+                $statement->bindParam(':choutdate', $choutdate);
+
+                $statement->execute(); 
+                
+                //echo '<p> Success, your tune has been added!</p> ';
+                //close DB connection 
+                $statement->closeCursor(); 
+
+                header ("location: view1.php");
+                
+
+                
+
+            
+            }
             catch(PDOException $e) {
                 echo "<p>Something went wrong! </p>";
-                $error_message = $e->getMessage(); 
-                echo $error_message;
-                }
-           }
-           // ob_flush();
-?>
 
+
+}
+?>
+   <a href="logout.php">Log Out </a>
+            
