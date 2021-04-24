@@ -1,34 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Hotel Arizona</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="main.css" >
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    </head>
+    <body>
+        <header>
+            <article>
+             <img src="arizona.png" alt="Eror">
+            <div class="arizona">
+            <h1>Hotel Arizona</h1>
+                </div>
+</article>
+<ul>
+    <li><a href="home.php">Home </a></li>
+    <li> <a href="bookngs.php">Bookings</a></li>
+    <li><a href="aboutus.php">About us</a></li>
+    <li><a href="contactus.php">Contact Us</a></li>
+</ul>
+</header>
+</body>
+</html>
 <?php
 
+$first_name = filter_input(INPUT_POST, 'fname');
+$last_name = filter_input(INPUT_POST, 'lname');
+$phone = filter_input(INPUT_POST, 'phonenum',FILTER_VALIDATE_INT);
+$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+$location = filter_input(INPUT_POST, 'location');
+$chindate= filter_input(INPUT_POST,'chindate');
+$choutdate= filter_input(INPUT_POST,'choutdate');
 
-//connect to db 
-require('connect.php'); 
 
-//set up our query 
-$sql = "SELECT * FROM songs"; 
+//set up a flag variable for debugging 
+$ok = true; 
+try{
 
-//prepare the query 
+    require('connect.php');
 
-$statement = $db->prepare($sql); 
+    $sql = "INSERT into RoomBooking (first_name, last_name, phone, email, location,chin_date, chout_date) 
+    VALUES (:fname, :lname, :phonenum, :email, :location, :chindate, :choutdate)";
+    
+    $statement = $db->prepare($sql);
 
-//execute the query 
-$statement->execute(); 
+                //bind parameters using the bindParam method of the PDO Statement Object 
+                $statement->bindParam(':fname', $first_name);
+                $statement->bindParam(':lname', $last_name);
+                $statement->bindParam(':phonenum', $phone);
+                $statement->bindParam(':email', $email);
+                $statement->bindParam(':location', $location);
+                $statement->bindParam(':chindate', $chindate);
+                $statement->bindParam(':choutdate', $choutdate);
 
-//use fetchAll to store results 
-$records = $statement->fetchAll(); 
+                $statement->execute(); 
+                
+                //echo '<p> Success, your tune has been added!</p> ';
+                //close DB connection 
+                $statement->closeCursor(); 
 
-//echo out top of table 
+                header ("location: view1.php");
+                
 
-echo "<table class='table table-striped'><tbody>"; 
+                
 
-foreach($records as $record) {
-    echo"<tr><td>". $record['first_name']. 
-    "</td><td>" . $record['last_name'] . "</td><td>" . $record['phone'] . "</td><td>" . $record['email'] . "</td><td>" . $record['chin_date'] . "</td><td>" . $record['chout_date']. "</td></tr>"; 
+            
+            }
+            catch(PDOException $e) {
+                echo "<p>Something went wrong! </p>";
+
+
 }
-
-echo "</tbody></table>"; 
-
-//close the DB connection 
-$statement->closeCursor(); 
-
 ?>
+   <a href="logout.php">Log Out </a>
+            

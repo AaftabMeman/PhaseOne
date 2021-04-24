@@ -25,7 +25,7 @@
 </body>
 </html>
 <?php
-ob_start();
+// ob_start();
 
 $first_name = filter_input(INPUT_POST, 'fname');
 $last_name = filter_input(INPUT_POST, 'lname');
@@ -36,40 +36,32 @@ $choutdate= filter_input(INPUT_POST,'choutdate');
 $id = null; 
 $id = filter_input(INPUT_POST, 'user_id');
 
+
+
 //set up a flag variable for debugging 
 $ok = true; 
 
-if($ok === true){
+//if($ok === true){
 
-try{
-
-    require('connect.php');
-    if(!empty($id)){
-        $sql = "UPDATE RoomBooking SET first_name = :firstname, last_name = :lastname, phone = :phone, email = :email,chin_date= :chin_date, chout_date = :chout_date WHERE user_id = :user_id;";
-    }
-    else{
-
-    $sql = "INSERT INTO RoomBooking (first_name, last_name, phone, email, chin_date, chout_date) VALUES (:first_name, :last_name, :phone, :email, :chin_date, :chout_date);";
-    
-    $statement = $db->prepare($sql);
-
-                //bind parameters using the bindParam method of the PDO Statement Object 
-                $statement->bindParam(':first_name', $first_name);
-                $statement->bindParam(':last_name', $last_name);
-                $statement->bindParam(':phone', $phone);
-                $statement->bindParam(':email', $email);
-                $statement->bindParam(':chin_date', $chindate);
-                $statement->bindParam(':chout_date', $choutdate);
-                if(!empty($id)) {
-                    $statement->bindParam(':user_id', $id ); 
-                }
-
-                $statement->execute(); 
-
-                $statement->closeCursor();
-                    
-            
-            }
+    if($ok === true) {
+        try {
+            //connect to the database
+            require('connect.php');
+            //set up our SQL query 
+            $sql = "INSERT INTO RoomBooking (first_name, last_name, phone, email, chin_date,chout_date) VALUES (:firstname, :lastname, :phone, :email, :chindate, :choutdate);"; 
+            //call the prepare method of the PDO object 
+            $statement = $db->prepare($sql);
+            //bind parameters 
+            $statement->bindParam(':firstname', $first_name);
+            $statement->bindParam(':lastname', $last_name); 
+            $statement->bindParam(':phone', $phone);
+            $statement->bindParam(':email', $email); 
+            $statement->bindParam(':chindate', $chindate); 
+            $statement->bindParam(':choutdate', $choutdate); 
+            //execute the query 
+            $statement->execute();
+            //close the db connection 
+            $statement->closeCursor(); 
         }
 
             catch(PDOException $e) {
@@ -77,7 +69,7 @@ try{
                 $error_message = $e->getMessage(); 
                 echo $error_message;
                 }
-            }
-            ob_flush();
+           }
+           // ob_flush();
 ?>
 
